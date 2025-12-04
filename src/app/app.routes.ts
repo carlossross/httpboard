@@ -32,4 +32,11 @@ export const routes: Routes = [
         (m) => m.PostsComputedPageComponent
       ),
   },
+  {
+    path: 'posts-crud',
+    loadComponent: () =>
+      import('./posts/pages/posts-crud-page/posts-crud-page.component').then(
+        (m) => m.PostsCrudPageComponent
+      ),
+  },
 ];

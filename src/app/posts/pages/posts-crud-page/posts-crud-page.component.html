@@ -1,0 +1,109 @@
+<section class="crud">
+  <h1>HttpBoard — CRUD básico</h1>
+
+  <div *ngIf="loading()" class="crud__state crud__state--loading">Cargando...</div>
+
+  <div *ngIf="error()" class="crud__state crud__state--error">
+    {{ error() }}
+  </div>
+
+  <!-- 🔹 Lista principal -->
+  <section class="crud__section">
+    <header class="crud__section-header">
+      <h2>Lista de posts (GET lista)</h2>
+      <button type="button" (click)="loadAll()">Recargar lista</button>
+    </header>
+
+    <ul class="crud__list">
+      <li *ngFor="let post of posts(); trackBy: trackByPostId" class="crud__item">
+        <h3>#{{ post.id }} — {{ post.title }}</h3>
+        <p>{{ post.content }}</p>
+        <small>Autor: {{ post.authorId }}</small>
+
+        <div class="crud__item-actions">
+          <button type="button" (click)="searchId.set(post.id); loadById()">
+            Ver detalle (GET by id)
+          </button>
+          <button type="button" (click)="deletePost(post.id)">Eliminar (DELETE)</button>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 🔹 GET by id -->
+  <section class="crud__section">
+    <h2>Buscar por id (GET by id)</h2>
+
+    <label>
+      Id:
+      <input type="number" [(ngModel)]="searchId" name="searchId" placeholder="Ej. 1" />
+    </label>
+    <button type="button" (click)="loadById()">Buscar</button>
+
+    <div *ngIf="selectedPost()" class="crud__detail">
+      <h3>Post encontrado</h3>
+      <p>
+        <strong>#{{ selectedPost()!.id }}</strong> — {{ selectedPost()!.title }}
+      </p>
+      <p>{{ selectedPost()!.content }}</p>
+      <small>Autor: {{ selectedPost()!.authorId }}</small>
+    </div>
+  </section>
+
+  <!-- 🔹 Crear (POST) -->
+  <section class="crud__section">
+    <h2>Crear post (POST)</h2>
+
+    <form (ngSubmit)="createPost()">
+      <label>
+        Título:
+        <input type="text" [(ngModel)]="newTitle" name="newTitle" placeholder="Título..." />
+      </label>
+
+      <label>
+        Contenido:
+        <textarea [(ngModel)]="newContent" name="newContent" placeholder="Contenido..."></textarea>
+      </label>
+
+      <label>
+        AuthorId:
+        <input type="number" [(ngModel)]="newAuthorId" name="newAuthorId" placeholder="Ej. 1" />
+      </label>
+
+      <button type="submit">Crear</button>
+    </form>
+  </section>
+
+  <!-- 🔹 Actualizar (PUT) -->
+  <section class="crud__section">
+    <h2>Actualizar post (PUT)</h2>
+
+    <form (ngSubmit)="updatePost()">
+      <label>
+        Id:
+        <input type="number" [(ngModel)]="editId" name="editId" placeholder="Id a actualizar" />
+      </label>
+
+      <label>
+        Nuevo título (opcional):
+        <input type="text" [(ngModel)]="editTitle" name="editTitle" placeholder="Nuevo título..." />
+      </label>
+
+      <label>
+        Nuevo contenido (opcional):
+        <textarea
+          [(ngModel)]="editContent"
+          name="editContent"
+          placeholder="Nuevo contenido..."
+        ></textarea>
+      </label>
+
+      <label>
+        Nuevo authorId (opcional):
+        <input type="number" [(ngModel)]="editAuthorId" name="editAuthorId" placeholder="Ej. 1" />
+      </label>
+
+      <button type="submit">Actualizar</button>
+    </form>
+  </section>
+</section>

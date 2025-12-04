@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { map, retry } from 'rxjs';
 import { PostDTO } from '../models/post.dto';
 import { mapPostDomainToDTO, mapPostDTOToDomain } from '../models/post.mapper';
 import { CreatePostPayload, Post, UpdatePostPayload } from '../models/post.model';
+import { SKIP_AUTH, SKIP_LOG } from '../../core/http/http-context-tokens';
 
 @Injectable({
   providedIn: 'root',
@@ -14,14 +15,18 @@ export class PostsService {
   constructor(private http: HttpClient) {}
 
   getAll() {
-    return this.http.get<PostDTO[]>(this.apiUrl).pipe(
+    const ctx = new HttpContext().set(SKIP_AUTH, true);
+    return this.http.get<PostDTO[]>(this.apiUrl, { context: ctx }).pipe(
       retry(2),
       map((dtos) => dtos.map(mapPostDTOToDomain))
     );
   }
 
   getById(id: number) {
-    return this.http.get<PostDTO>(`${this.apiUrl}/${id}`).pipe(retry(2), map(mapPostDTOToDomain));
+    const ctx = new HttpContext().set(SKIP_LOG, true);
+    return this.http
+      .get<PostDTO>(`${this.apiUrl}/${id}`, { context: ctx })
+      .pipe(retry(2), map(mapPostDTOToDomain));
   }
 
   create(payload: CreatePostPayload) {
