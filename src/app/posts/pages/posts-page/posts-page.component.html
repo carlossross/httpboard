@@ -1,0 +1,33 @@
+<section class="posts-page">
+  <header class="posts-page__header">
+    <h1>HttpBoard — Posts</h1>
+    <button type="button" (click)="loadPosts()">Recargar</button>
+  </header>
+
+  <!-- Estado: loading -->
+  @if (loading()) {
+  <div class="posts-page__state posts-page__state--loading">Cargando posts...</div>
+  }
+
+  <!-- Estado: error -->
+  @if (!loading() && error()) {
+  <div class="posts-page__state posts-page__state--error">
+    {{ error() }}
+  </div>
+  }
+
+  <!-- Estado: lista -->
+  @if (!loading() && !error()) {
+  <ul class="posts-page__list">
+    @for (post of posts(); track trackByPostId($index, post)) {
+    <li class="posts-page__item">
+      <h2 class="posts-page__title">#{{ post.id }} — {{ post.title }}</h2>
+      <p class="posts-page__content">
+        {{ post.content }}
+      </p>
+      <span class="posts-page__meta"> Autor: {{ post.authorId }} </span>
+    </li>
+    }
+  </ul>
+  }
+</section>
