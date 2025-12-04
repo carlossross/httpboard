@@ -1,0 +1,19 @@
+<section class="posts-effect">
+  <h1>Posts — Patrón effect()</h1>
+
+  <button type="button" (click)="reloadNow()">Recargar (effect)</button>
+
+  @if (loading()) {
+  <div class="state state--loading">Cargando (effect)...</div>
+  } @if (!loading() && error()) {
+  <div class="state state--error">
+    {{ error() }}
+  </div>
+  } @if (!loading()&&!error()) {
+  <ul>
+    @for (post of posts(); track trackByPostId($index, post)) {
+    <li>#{{ post.id }} — {{ post.title }}</li>
+    }
+  </ul>
+  }
+</section>

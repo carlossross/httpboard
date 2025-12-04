@@ -1,1 +1,10 @@
-<router-outlet />
+<nav class="nav">
+  <a routerLink="/posts-subscribe" routerLinkActive="active">subscribe()</a>
+  <a routerLink="/posts-tosignal" routerLinkActive="active">toSignal()</a>
+  <a routerLink="/posts-effect" routerLinkActive="active">effect()</a>
+  <a routerLink="/posts-computed" routerLinkActive="active">computed()</a>
+</nav>
+
+<main class="main">
+  <router-outlet></router-outlet>
+</main>

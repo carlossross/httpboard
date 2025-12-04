@@ -1,0 +1,21 @@
+<section class="posts-computed">
+  <h1>Posts — Patrón computed()</h1>
+
+  <button type="button" (click)="load()">Recargar (computed)</button>
+
+  <p>Total de posts: {{ total() }}</p>
+
+  @if (loading()) {
+  <div class="state state--loading">Cargando (computed)...</div>
+  } @if (!loading() && error()) {
+  <div class="state state--error">
+    {{ error() }}
+  </div>
+  } @if (!loading()&&!error()) {
+  <ul>
+    @for (post of posts(); track trackByPostId($index, post)) {
+    <li>#{{ post.id }} — {{ post.title }}</li>
+    }
+  </ul>
+  }
+</section>
